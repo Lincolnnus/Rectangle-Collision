@@ -1,0 +1,54 @@
+Explanations:
+
+
+1. Data model
+
+
+The world model contains multiple physics objects. The brick model is a subset of the physics object model. More shapes can be added as subclasses of the physics object model. The wall is currently modeled as a brick with infinite mass.
+
+
+
+
+2. Module Dependency Diagram.
+
+
+The world controller controls the world model data and the world view.
+It also contains many child View Controllers, each controlling a physics object. For now, only brick controller exists which controls the brick model data(update brick velocity/position/ect) and brick view(reload view).  The brick model is a subclass of the object model and the brick view is a subview in the world view.
+
+
+To support more complex shapes, more shape controller should be added to the design. Its corresponding shape model(which is a subclass of the object model) and shape view(subview of the world view)should be added,too. 
+
+
+
+
+The collision detection and velocity/position update are executed in the accelerometer delegate method. Every timerinterval, the collisionDetection function will be called inside the world controller to handle the collision between every two physics objects. Depending on the object type, a corresponding handleCollision function will be called which updates the velocity and angular velocity of a physics object.To extend the design to support more complex shapes for collision detection, new handleCollision functions for the new object Types should be implemented. 
+
+
+One of the alternatives is to update the brick objects in the world controller without creating child view controllers for the bricks. This approach will bring the instance methods for brick object(like updateVelocity/Position) up to the world view controller, which is not a good MVC design.
+
+
+
+
+Testing
+Black Box Testing
+-Gravity
+        (testGravity)one brick falls
+-Orientation
+        (testGravity)when the orientation is not portrait, the brick shouldn’t fall
+-Rotation
+          (testRotation)brick with a initial rotation angle rotate after bouncing back from the ground.
+
+
+-Friction
+        (testFriction)two bricks lie on the ground, the one with smaller friction starts move first when ipad tilt.
+
+
+-Two Objects Collision
+        (testTwoCollision)Two bricks fall together. One above the other. They collide with each other after one bounces back.
+
+
+-Three Objects Collision
+        (testThreeCollision)Three bricks fall together. They collide with each other with the impulse from each other.
+-Multiple Objects Collision
+        (testMultipleCollision) Multiple bricks fall together. They collide with each other with impulse from collision.
+
